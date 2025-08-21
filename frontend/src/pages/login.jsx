@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { loginU,getPerfil } from "../api/usuarios";
+import { loginU } from "../api/usuarios";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [nombre, setNombre] = useState("");
   const [contra, setContra] = useState("");
@@ -13,17 +12,23 @@ export default function Login() {
     try {
       const response = await loginU({ nombre, contra });
       const data = response.body;
+      const status = response.status;
       setNombre("");
       setContra("");
       setMsg(data.msg);
-
+      
+      if (status != 200) {
+        alert(data.msg);
+        navigate("/login");
+        return;
+      }
       if (data.token) {
         localStorage.setItem("token", data.token);
         alert("Login exitoso");
         navigate("/home");
       } else {
-        navigate("/login");
         alert("Error en el login");
+        navigate("/login");
       }
     } catch (error) {
       console.log(error);
@@ -45,7 +50,7 @@ export default function Login() {
           value={contra}
           onChange={(e) => setContra(e.target.value)}
         />
-        <button type="submit">Envair</button>
+        <button type="submit">Enviar</button>
       </form>
       <a href="/register">Registrarse</a>
       <p>{msg}</p>

@@ -14,12 +14,22 @@ const SECRET = process.env.SECRET_WORD;
 router.post("/register", async (req, res) => {
   try {
     const { nombre, contra } = req.body;
+    const resp=await db.query("SELECT * FROM usuarios WHERE nombre=$1",[nombre])
+    if(resp.rows.length>0){
+      res.status(500).json({msg:"Usuario existente"})
+      return
+    }
+    
     const hashedContra = await bcrypt.hash(contra, 10);
-    await db.query(
-      "INSERT INTO usuarios (nombre,contra,rol) VALUES ($1,$2,'usuario')",
+    const response=await db.query(
+      "INSERT INTO usuarios (nombre,contra,rol) VALUES ($1,$2,'usuario') RETURNING *",
       [nombre, hashedContra]
-    );
-    res.status(200).json({ msg: "Usuario registrado correctamente" });
+    );    
+    const user=response.rows[0]
+    const token = jwt.sign({ id: user.id, nombre: user.nombre }, SECRET, {
+      expiresIn: "1h",
+    });
+    res.status(200).json({ token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Error registrando usuario" });
@@ -55,16 +65,20 @@ function verifyToken(req, res, next) {
   jwt.verify(token, SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
+    console.log(`Usuario actual → ID: ${user.id}, Nombre: ${user.nombre}`);
+
     next();
   });
 }
-router.get("/profile",verifyToken,async(req,res)=>{
-    try {
-        const result=await db.query("SELECT id,nombre FROM usuario WHERE id=$1",[req.user.id]);
-        res.json({msg:"Perfil cargado",user:result.rows[0]})
-    } catch (error) {
-        res.status(500).json({msg:"Error en el servidor"})
-    }
-})
+router.get("/profile", verifyToken, async (req, res) => {
+  try {
+    const result = await db.query("SELECT * FROM usuarios WHERE id=$1", [
+      req.user.id,
+    ]);
+    res.json({ msg: "Perfil cargado", user: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ msg: "Error en el servidor" });
+  }
+});
 
 export default router;

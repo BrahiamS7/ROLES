@@ -9,15 +9,24 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data=await agregarUsuario({ nombre, contra });
+      const response = await agregarUsuario({ nombre, contra });
+      const data=response.body
+      const status=response.status
       setNombre("");
       setContra("");
-      console.log(data);
-      
-      if(data.status===200){
-        navigate("/home")
+      console.log(data.status);
+      if(status!=200){
+        alert(data.msg)
+        navigate("/register")
+        return
+      }
+      if (data.token) {
+        localStorage.setItem("token",data.token)
+        alert("registrado exitosamente");
+        navigate("/home");
       } else {
-          navigate("/register")
+        alert("Error registrando");
+        navigate("/register");
       }
     } catch (error) {
       console.log(error);
@@ -25,7 +34,7 @@ export default function Register() {
   };
   return (
     <div>
-        <h1>Register</h1>
+      <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -39,7 +48,7 @@ export default function Register() {
           value={contra}
           onChange={(e) => setContra(e.target.value)}
         />
-        <button type="submit">Envair</button>
+        <button type="submit">Enviar</button>
       </form>
       <a href="/login">Log In</a>
     </div>

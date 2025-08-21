@@ -1,5 +1,4 @@
 const url = import.meta.env.VITE_API_URL;
-
 export async function cargarUsuarios() {
   const response = await fetch(`${url}/api/usuarios/`);
   if (!response.ok) throw new Error("Error en la funcion");
@@ -7,13 +6,17 @@ export async function cargarUsuarios() {
 }
 
 export async function getPerfil(token) {
-  const response=await fetch(`${url}/auth/profile`,{
+  const response=await fetch(`${url}/api/auth/profile`,{
     headers:{
         Authorization:`Bearer ${token}`
     }
   });
   if(!response.ok) throw new Error("Error en la funcion");
-  return response.json();
+  const data=await response.json();
+  console.log(data);
+  
+  console.log(`Usuario actual: ${data.user}`);
+  return data
 }
 
 export async function agregarUsuario(data) {
@@ -22,10 +25,8 @@ export async function agregarUsuario(data) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Error en la funcion");
-
   const status = res.status;
-  const body = await res.json();
+  const body = await res.json();  
   return { status, body };
 }
 export async function loginU(data) {
@@ -34,8 +35,6 @@ export async function loginU(data) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Error en la funcion");
-
   const status = res.status;
   const body = await res.json();
   return { status, body };
