@@ -6,6 +6,7 @@ export default function Register() {
   const navigate = useNavigate();
   const [nombre, setNombre] = useState("");
   const [contra, setContra] = useState("");
+  const [msg, setMsg] = useState("")
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -14,9 +15,11 @@ export default function Register() {
       const status=response.status
       setNombre("");
       setContra("");
-      console.log(data.status);
+      setMsg(data.msg)
+      setTimeout(()=>{
+        setMsg("")
+      },5000)
       if(status!=200){
-        alert(data.msg)
         navigate("/register")
         return
       }
@@ -51,6 +54,9 @@ export default function Register() {
         <button type="submit">Enviar</button>
       </form>
       <a href="/login">Log In</a>
+      <p>
+        {msg}
+      </p>
     </div>
   );
 }

@@ -29,6 +29,7 @@ export async function agregarUsuario(data) {
   const body = await res.json();  
   return { status, body };
 }
+
 export async function loginU(data) {
   const res = await fetch(`${url}/api/auth/login`, {
     method: "POST",

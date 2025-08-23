@@ -15,19 +15,18 @@ export default function Login() {
       const status = response.status;
       setNombre("");
       setContra("");
-      setMsg(data.msg);
-      
+      setMsg(data.msg)
+      setTimeout(()=>{
+        setMsg("")
+      },5000);
       if (status != 200) {
-        alert(data.msg);
         navigate("/login");
         return;
       }
       if (data.token) {
         localStorage.setItem("token", data.token);
-        alert("Login exitoso");
         navigate("/home");
       } else {
-        alert("Error en el login");
         navigate("/login");
       }
     } catch (error) {

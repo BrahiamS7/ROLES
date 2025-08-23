@@ -4,6 +4,7 @@ import env from "dotenv";
 import cors from "cors";
 import usuariosRoutes from "./routes/usuarios.routes.js";
 import authRoutes from "./routes/auth.routes.js"
+import tareasRoutes from "./routes/tareas.routes.js"
 
 env.config();
 
@@ -24,6 +25,8 @@ app.get("/", (req, res) => {
 //RUTAS
 app.use("/api/usuarios", usuariosRoutes);
 app.use("/api/auth",authRoutes);
+app.use("/api/notas",tareasRoutes);
+
 
 //RUTA LISTEN
 app.listen(port, () => {
