@@ -1,6 +1,13 @@
 const url = import.meta.env.VITE_API_URL;
+
 export async function cargarUsuarios() {
   const response = await fetch(`${url}/api/usuarios/`);
+  if (!response.ok) throw new Error("Error en la funcion");
+  return response.json();
+}
+
+export async function cargarUsuario(nombre) {
+  const response = await fetch(`${url}/api/usuarios/info/${nombre}`);
   if (!response.ok) throw new Error("Error en la funcion");
   return response.json();
 }
@@ -21,6 +28,17 @@ export async function getPerfil(token) {
 
 export async function agregarUsuario(data) {
   const res = await fetch(`${url}/api/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const status = res.status;
+  const body = await res.json();  
+  return { status, body };
+}
+
+export async function agregarAdmin(data) {
+  const res = await fetch(`${url}/api/auth/registerAd`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),

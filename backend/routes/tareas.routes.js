@@ -22,12 +22,15 @@ router.post("/add", async (req, res) => {
 
 router.post("/getTareas", async (req, res) => {
   try {
-    const id = req.body.id;
+    const {id} = req.body;
     const result = await db.query("SELECT * FROM tareas WHERE usuario_id=$1", [
       id,
     ]);
     const tareas = result.rows;
+    console.log(tareas);
+    
     res.status(200).json({ msg: "Tareas cargadas correctamente", tareas });
+    
   } catch (error) {
     console.log(error);
   }
@@ -44,12 +47,12 @@ router.delete("/delete", async (req, res) => {
 });
 
 router.put("/act", async (req, res) => {
-  const { id, titulo, descrip } = req.body;
-  console.log(id,titulo,descrip);  
+  const { id, titulo, descrip,estado } = req.body;
   try {
-    await db.query("UPDATE tareas SET titulo=$1, descripcion=$2 WHERE id=$3", [
+    await db.query("UPDATE tareas SET titulo=$1, descripcion=$2, estado=$3 WHERE id=$4", [
       titulo,
       descrip,
+      estado,
       id,
     ]);
     res.status(200).json({ msg: "Tarea actualizada correctamente" });
