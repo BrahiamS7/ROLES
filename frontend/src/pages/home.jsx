@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { getPerfil } from "../api/usuarios";
-import { addTarea, getTareas, deleteTarea } from "../api/tareas";
+import {
+  addTarea,
+  getTareas,
+  deleteTarea,
+  actualizarTarea,
+} from "../api/tareas";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
@@ -9,18 +14,36 @@ function Home() {
   const navigate = useNavigate();
   const [titulo, setTitulo] = useState("");
   const [msg, setMsg] = useState("");
+  const [id, setId] = useState("");
   const [descrip, setDescrip] = useState("");
+  const [show, setShow] = useState(false);
 
   const logOut = async () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
+
+  const setTarea = async (titulo, descr, id) => {
+    setShow(true);
+    setTitulo(titulo);
+    setDescrip(descr);
+    setId(id)
+  };
+  const actTarea=async()=>{
+    const data= await actualizarTarea({titulo,descrip,id})
+    setMsg(data.body.msg)
+    setTimeout(()=>{
+      setMsg("")
+    },3000)
+  }
+
   const borrarTarea = async (id) => {
     await deleteTarea({ id });
     const dataTareas = await getTareas({ id: perfil?.id });
     console.log("info:" + dataTareas);
     setTareas(dataTareas.body.tareas);
   };
+
   const agregarNota = async (e) => {
     e.preventDefault();
     const response = await addTarea({ titulo, descrip, id: perfil?.id });
@@ -35,6 +58,7 @@ function Home() {
     console.log("info:" + dataTareas);
     setTareas(dataTareas.body.tareas);
   };
+
   useEffect(() => {
     const fetchPerfilYTareas = async () => {
       const token = localStorage.getItem("token");
@@ -55,7 +79,6 @@ function Home() {
         navigate("/login");
       }
     };
-
     fetchPerfilYTareas();
   }, [navigate]);
 
@@ -92,10 +115,10 @@ function Home() {
       {tareas.length > 0 ? (
         <p>
           {tareas.map((t, i) => (
-            <div key={i}>
-              <h3>TAREA:{t.titulo}</h3>
-              <p>DESCRIPCION:{t.descripcion}</p>
-              <p>ESTADO:{t.estado}</p>
+            <div className="pendiente" key={i}>
+              <h3 >TAREA: {t.titulo}</h3>
+              <p>DESCRIPCION: {t.descripcion}</p>
+              <p>ESTADO: {t.estado}</p>
               <div>
                 <button
                   onClick={() => {
@@ -104,7 +127,13 @@ function Home() {
                 >
                   Borrar Tarea
                 </button>
-                <button>Actualizar Tarea</button>
+                <button
+                  onClick={() => {
+                    setTarea(t.titulo, t.descripcion, t.id);
+                  }}
+                >
+                  Actualizar Tarea
+                </button>
               </div>
             </div>
           ))}
@@ -113,6 +142,36 @@ function Home() {
         <p>No hay tareas disponibles...</p>
       )}
       <p>{msg}</p>
+
+      {/* MODAL */}
+      {show && (
+        <div>
+          <h2>Actualizar Tarea</h2>
+          <form onSubmit={actTarea}>
+            <input
+              type="text"
+              placeholder="Titulo de la tarea"
+              value={titulo}
+              onChange={(e) => setTitulo(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Descripcion"
+              value={descrip}
+              onChange={(e) => setDescrip(e.target.value)}
+              required
+            />
+            <input
+              type="number"
+              placeholder="ID"
+              value={id}
+              readOnly
+            />
+            <input type="submit" value="Actualizar" />
+          </form>
+        </div>
+      )}
     </>
   );
 }

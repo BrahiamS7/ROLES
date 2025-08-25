@@ -32,11 +32,27 @@ router.post("/getTareas", async (req, res) => {
     console.log(error);
   }
 });
-router.post("/delete", async (req, res) => {
+
+router.delete("/delete", async (req, res) => {
   try {
     const id = req.body.id;
     await db.query("DELETE FROM tareas * WHERE id=$1", [id]);
     res.status(200).json({ msg: "Tarea eliminada correctamente" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.put("/act", async (req, res) => {
+  const { id, titulo, descrip } = req.body;
+  console.log(id,titulo,descrip);  
+  try {
+    await db.query("UPDATE tareas SET titulo=$1, descripcion=$2 WHERE id=$3", [
+      titulo,
+      descrip,
+      id,
+    ]);
+    res.status(200).json({ msg: "Tarea actualizada correctamente" });
   } catch (error) {
     console.log(error);
   }
