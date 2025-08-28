@@ -27,7 +27,6 @@ router.post("/getTareas", async (req, res) => {
       id,
     ]);
     const tareas = result.rows;
-    console.log(tareas);
     
     res.status(200).json({ msg: "Tareas cargadas correctamente", tareas });
     
