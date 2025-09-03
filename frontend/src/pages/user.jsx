@@ -78,9 +78,9 @@ function User() {
       try {
         const dataPerfil = await getPerfil(token);
         setPerfil(dataPerfil.user);
-        if(dataPerfil.user.rol!="usuario"){
-            navigate("/admin");
-            return
+        if (dataPerfil.user.rol != "usuario") {
+          navigate("/admin");
+          return;
         }
 
         const dataTareas = await getTareas({ id: dataPerfil?.user.id });
@@ -97,7 +97,9 @@ function User() {
   return (
     <>
       <h1>INTERFAZ DE USUARIO</h1>
-      <button onClick={logOut}>Cerrar Sesion</button>
+      <button className="btn" onClick={logOut}>
+        Cerrar Sesion
+      </button>
       {perfil ? (
         <div>
           <h2>Bienvenido {perfil.nombre}</h2>
@@ -109,21 +111,30 @@ function User() {
       )}
       <h2>Agregar Tarea</h2>
       <form onSubmit={agregarNota}>
-        <input
-          type="text"
-          placeholder="Titulo de la tarea"
-          value={titulo}
-          onChange={(e) => setTitulo(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Descripcion"
-          value={descrip}
-          onChange={(e) => setDescrip(e.target.value)}
-          required
-        />
-        <input type="submit" value="Enviar" />
+        <label class="floating-label">
+          <span>Titulo</span>
+          <input
+            type="text"
+            placeholder="Titulo"
+            value={titulo}
+            class="input input-md"
+            onChange={(e) => setTitulo(e.target.value)}
+            required
+          />
+        </label>
+        <label class="floating-label">
+          <span>Descripcion</span>
+          <input
+            type="text"
+            placeholder="Descripcion"
+            value={descrip}
+            class="input input-md"
+            onChange={(e) => setDescrip(e.target.value)}
+            required
+          />
+        </label>
+
+        <input type="submit" value="Enviar" className="btn"/>
       </form>
       {tareas.length > 0 ? (
         <p>

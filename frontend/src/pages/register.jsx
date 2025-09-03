@@ -36,7 +36,7 @@ export default function Register() {
           navigate("/register");
         }
       } else {
-        const response = await agregarAdmin({ nombre, contra, key:token });
+        const response = await agregarAdmin({ nombre, contra, key: token });
         const data = response.body;
         const status = response.status;
         setNombre("");
@@ -67,22 +67,31 @@ export default function Register() {
     <div>
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nombre"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={contra}
-          onChange={(e) => setContra(e.target.value)}
-          required
-        />
-        <button type="submit">Enviar</button>
-        <button type="button" onClick={() => setShow(true)}>
+        <label class="floating-label">
+          <span>Nombre</span>
+          <input
+            type="text"
+            placeholder="Nombre"
+            class="input input-md m-3"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            required
+          />
+        </label>
+
+        <label class="floating-label">
+          <span>Contraseña</span>
+          <input
+            type="password"
+            placeholder="Contraseña"
+            class="input input-md m-3"
+            value={contra}
+            onChange={(e) => setContra(e.target.value)}
+            required
+          />
+        </label>
+        <button type="submit" className="btn bg-indigo-400 m-3" >Enviar</button>
+        <button type="button" className="btn bg-indigo-400 m-3"  onClick={() => setShow(true)}>
           Admin
         </button>
       </form>
