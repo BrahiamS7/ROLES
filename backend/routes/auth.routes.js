@@ -111,10 +111,13 @@ router.get("/profile", verifyToken, async (req, res) => {
     const result = await db.query("SELECT * FROM usuarios WHERE id=$1", [
       req.user.id,
     ]);
-    res.json({ msg: "Perfil cargado", user: result.rows[0] });
-    console.log(`Usuario actual → ID: ${user.id}, Nombre: ${user.nombre}`);
+    console.log(
+      `Usuario actual → ID: ${req.user.id}, Nombre: ${req.user.nombre}`
+    );
+    return res.json({ msg: "Perfil cargado", user: result.rows[0] });
   } catch (error) {
-    res.status(500).json({ msg: "Error en el servidor" });
+    console.error(error);
+    return res.status(500).json({ msg: "Error en el servidor" });
   }
 });
 

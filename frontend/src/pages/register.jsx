@@ -65,51 +65,61 @@ export default function Register() {
   };
   return (
     <div>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
-        <label class="floating-label">
-          <span>Nombre</span>
-          <input
-            type="text"
-            placeholder="Nombre"
-            class="input input-md m-3"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            required
-          />
-        </label>
+      <div className="flex flex-col justify-center items-center w-screen h-screen">
+        <div className="w-80 h-80 shadow-[0px_4px_6px_0px_rgba(0,_0,_0,_0.1)] rounded-lg flex flex-col justify-center items-center">
+          <h1>Register</h1>
+          <form onSubmit={handleSubmit}>
+            <label class="floating-label">
+              <span>Nombre</span>
+              <input
+                type="text"
+                placeholder="Nombre"
+                class="input input-md m-3"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                required
+              />
+            </label>
 
-        <label class="floating-label">
-          <span>Contraseña</span>
-          <input
-            type="password"
-            placeholder="Contraseña"
-            class="input input-md m-3"
-            value={contra}
-            onChange={(e) => setContra(e.target.value)}
-            required
-          />
-        </label>
-        <button type="submit" className="btn bg-indigo-400 m-3" >Enviar</button>
-        <button type="button" className="btn bg-indigo-400 m-3"  onClick={() => setShow(true)}>
-          Admin
-        </button>
-      </form>
-      <a href="/login">Log In</a>
-      <p>{msg}</p>
+            <label class="floating-label">
+              <span>Contraseña</span>
+              <input
+                type="password"
+                placeholder="Contraseña"
+                class="input input-md m-3"
+                value={contra}
+                onChange={(e) => setContra(e.target.value)}
+                required
+              />
+            </label>
+            <button type="submit" className="btn bg-indigo-400 m-3">
+              Enviar
+            </button>
+            <button
+              type="button"
+              className="btn bg-indigo-400 m-3"
+              onClick={() => setShow(true)}
+            >
+              Admin
+            </button>
+          </form>
+          <a href="/login" className="font-medium text-indigo-400 dark:text-indigo-400 hover:underline">Log In</a>
+          <p>{msg}</p>
 
-      {/* MODAL */}
-      {show && (
-        <div>
-          <h3>Ingrese su token: </h3>
-          <input
-            type="text"
-            value={token}
-            placeholder="Token"
-            onChange={(e) => setToken(e.target.value)}
-          />
+          {/* MODAL */}
+          {show && (
+            <div>
+              <h3>Ingrese su token: </h3>
+              <input
+                type="text"
+                value={token}
+                placeholder="Token"
+                onChange={(e) => setToken(e.target.value)}
+              />
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

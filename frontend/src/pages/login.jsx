@@ -35,34 +35,39 @@ export default function Login() {
   };
   return (
     <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <label class="floating-label">
-          <span>Nombre</span>
-          <input
-            type="text"
-            placeholder="Nombre"
-            class="input input-md m-3"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-          />
-        </label>
+      <div className="flex flex-col justify-center items-center w-screen h-screen">
+        <div className="w-80 h-80 shadow-[0px_4px_6px_0px_rgba(0,_0,_0,_0.1)] rounded-lg flex flex-col justify-center items-center">
+          <h1>Login</h1>
+          <form onSubmit={handleSubmit}>
+            <label class="floating-label">
+              <span>Nombre</span>
+              <input
+                type="text"
+                placeholder="Nombre"
+                class="input input-md m-3"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+              />
+            </label>
 
-        <label class="floating-label">
-          <span>Contraseña</span>
-          <input
-            type="password"
-            placeholder="Contraseña"
-            class="input input-md m-3"
-            value={contra}
-            onChange={(e) => setContra(e.target.value)}
-          />
-        </label>
-
-        <button type="submit" className="btn bg-indigo-400 m-3">Enviar</button>
-      </form>
-      <a href="/register">Registrarse</a>
-      <p>{msg}</p>
+            <label class="floating-label">
+              <span>Contraseña</span>
+              <input
+                type="password"
+                placeholder="Contraseña"
+                class="input input-md m-3"
+                value={contra}
+                onChange={(e) => setContra(e.target.value)}
+              />
+            </label>
+            <button type="submit" className="btn bg-indigo-400 m-3">
+              Enviar
+            </button>
+          </form>
+          <a href="/register" className="font-medium text-indigo-400 dark:text-indigo-400 hover:underline">Registrarse</a>
+          <p>{msg}</p>
+        </div>
+      </div>
     </div>
   );
 }
