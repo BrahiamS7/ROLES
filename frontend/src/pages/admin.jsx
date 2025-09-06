@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getPerfil, cargarUsuarios } from "../api/usuarios";
+import TaskCard from "../components/TaskCard";
 import {
   addTarea,
   getTareas,
@@ -17,7 +18,6 @@ function Admin() {
   const [msg, setMsg] = useState("");
   const [id, setId] = useState("");
   const [descrip, setDescrip] = useState("");
-  const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
   const logOut = async () => {
@@ -26,7 +26,6 @@ function Admin() {
   };
 
   const setTarea = async (titulo, descr, id, estado) => {
-    setShow(true);
     setTitulo(titulo);
     setDescrip(descr);
     setId(id);
@@ -65,7 +64,6 @@ function Admin() {
   const cancelarAct = () => {
     setDescrip("");
     setTitulo("");
-    setShow(false);
   };
 
   useEffect(() => {
@@ -103,10 +101,10 @@ function Admin() {
   }, [navigate]);
 
   return (
-    <div className="h-screen flex flex-col">
-      <div class="navbar bg-base-100 shadow-sm">
+    <div className="h-screen bg-gradient-to-b from-[#eef0f1] via-[#E6ECF5] to-[#DCE3F0] flex flex-col">
+      <div class="navbar ">
         <div class="flex-1">
-          <a class="btn btn-ghost text-xl">daisyUI</a>
+          <a class="btn btn-ghost text-xl">{perfil?.rol}</a>
         </div>
         <div class="flex-none">
           <div class="dropdown dropdown-end">
@@ -182,177 +180,124 @@ function Admin() {
           </div>
         </div>
       </div>
-      <div className="bg-base-200 h-full w-full flex-1 overflow-y-auto">
-        <h2 className="text-xl m-3">Agregar Tarea</h2>
-        <form onSubmit={agregarNota}>
-          <label class="floating-label">
-            <span>Titulo</span>
-            <input
-              type="text"
-              placeholder="Titulo"
-              className="input input-md m-3"
-              value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
-              required
-            />
-          </label>
-          <label class="floating-label">
-            <span>Descripcion</span>
-            <input
-              type="text"
-              placeholder="Descripcion"
-              className="input input-md m-3"
-              value={descrip}
-              onChange={(e) => setDescrip(e.target.value)}
-              required
-            />
-          </label>
-          <input
-            type="submit"
-            value="Enviar"
-            className="btn bg-indigo-400 m-3"
-          />
-        </form>
-        {tareas.length > 0 ? (
-          <div>
-            {tareas.map((t, i) => (
-              <div key={i}>
-                <div
-                  className={`card card-border w-96 mt-3 mb-3 ml-3 ${
-                    t.estado === "Pendiente"
-                      ? "bg-yellow-200"
-                      : t.estado === "En progreso"
-                      ? "bg-blue-200"
-                      : "bg-green-200"
-                  }`}
-                >
-                  <div class="card-body">
-                    <h2 class="card-title">{t.titulo}</h2>
-                    <p>{t.descripcion}</p>
-                    <p>{t.estado}</p>
-                    <div class="card-actions justify-end">
-                      <button
-                        className="btn btn-error"
-                        onClick={() => {
-                          borrarTarea(t.id);
-                        }}
-                      >
-                        Borrar Tarea
-                      </button>
-                      <button
-                        className="btn bg-indigo-400"
-                        onClick={() => {
-                          setTarea(t.titulo, t.descripcion, t.id, t.estado);
-                        }}
-                      >
-                        Actualizar Tarea
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>No hay tareas disponibles...</p>
-        )}
-        <p>{msg}</p>
-
-        {/* MOSTRAR USUARIOS */}
-        <div>
-          <div class="overflow-x-auto">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Cargo</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {usuarios.length > 0 ? (
-                  usuarios.map((u, i) => (
-                    <tr key={i}>
-                      <td>
-                        <div class="flex items-center gap-3">
-                          <div class="avatar">
-                            <div class="mask mask-squircle h-12 w-12">
-                              <img
-                                src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-                                alt="Avatar Tailwind CSS Component"
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <div class="font-bold">{u.nombre}</div>
-                            <div class="text-sm opacity-50">Colombia</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        Guadalajara de Buga
-                        <br />
-                        <span class="badge badge-ghost badge-sm">Operario</span>
-                      </td>
-                      <th>
-                        <button class="btn btn-ghost btn-xs">
-                          <a href={`/user/${u.nombre}`}>Detalles</a>
-                        </button>
-                      </th>
-                    </tr>
-                  ))
-                ) : (
-                  <h2>No hay usuarios a cargo...</h2>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* MODAL */}
-        {show && (
-          <div>
-            <h2>Actualizar Tarea</h2>
-            <form onSubmit={actTarea}>
+      <div className="full w-full flex-1 overflow-y-auto">
+        <div className="bg-[#F1F3F9] m-15 p-10 rounded-xl shadow">
+          <h2 className="text-xl m-3">Agregar Tarea</h2>
+          <form onSubmit={agregarNota}>
+            <label class="floating-label">
+              <span>Titulo</span>
               <input
                 type="text"
-                placeholder="Titulo de la tarea"
+                placeholder="Titulo"
+                className="input input-md m-3"
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
                 required
               />
+            </label>
+            <label class="floating-label">
+              <span>Descripcion</span>
               <input
                 type="text"
                 placeholder="Descripcion"
+                className="input input-md m-3"
                 value={descrip}
                 onChange={(e) => setDescrip(e.target.value)}
                 required
               />
-              <input
-                type="number"
-                placeholder="ID"
-                value={id}
-                readOnly
-                hidden
-              />
-              <select
-                value={estado}
-                onChange={(e) => setEstado(e.target.value)}
-              >
-                <option value="Pendiente">Pendiente</option>
-                <option value="En progreso">En progreso</option>
-                <option value="Completado">Completado</option>
-              </select>
-              <p>Estado: {estado}</p>
-              <input type="submit" value="Actualizar" />
-              <input
-                type="button"
-                value="Cancelar"
-                onClick={() => cancelarAct()}
-              />
-            </form>
+            </label>
+            <input
+              type="submit"
+              value="Enviar"
+              className="btn bg-indigo-400 m-3"
+            />
+          </form>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+            {["Pendiente", "En progreso", "Completado"].map((estado) => (
+              <div key={estado} className="text-center">
+                <h1 className="font-bold text-lg mb-3">{estado}</h1>
+                <div className="flex flex-col items-center gap-3">
+                  {tareas
+                    .filter((t) => t.estado === estado)
+                    .map((t) => (
+                      <TaskCard
+                        key={t.id}
+                        tarea={t}
+                        titulo={titulo}
+                        setTitulo={setTitulo}
+                        descrip={descrip}
+                        setDescrip={setDescrip}
+                        estado={estado}
+                        setEstado={setEstado}
+                        setTarea={setTarea}
+                        borrarTarea={borrarTarea}
+                        actTarea={actTarea}
+                        cancelarAct={cancelarAct}
+                      />
+                    ))}
+                </div>
+              </div>
+            ))}
           </div>
-        )}
+
+          <p>{msg}</p>
+        </div>
+
+        {/* MOSTRAR USUARIOS */}
+        <div className="bg-[#F1F3F9] m-15 p-10 rounded-xl shadow">
+          <h2 className="text-xl m-3">Usuarios a cargo:</h2>
+          <div>
+            <div class="overflow-x-auto">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Cargo</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {usuarios.length > 0 ? (
+                    usuarios.map((u, i) => (
+                      <tr key={i}>
+                        <td>
+                          <div class="flex items-center gap-3">
+                            <div class="avatar">
+                              <div class="mask mask-squircle h-12 w-12">
+                                <img
+                                  src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                                  alt="Avatar Tailwind CSS Component"
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <div class="font-bold">{u.nombre}</div>
+                              <div class="text-sm opacity-50">Colombia</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          Guadalajara de Buga
+                          <br />
+                          <span class="badge badge-ghost badge-sm">
+                            Operario
+                          </span>
+                        </td>
+                        <th>
+                          <button class="btn btn-ghost btn-xs">
+                            <a href={`/user/${u.nombre}`}>Detalles</a>
+                          </button>
+                        </th>
+                      </tr>
+                    ))
+                  ) : (
+                    <h2>No hay usuarios a cargo...</h2>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
