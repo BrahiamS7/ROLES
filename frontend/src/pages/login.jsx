@@ -34,17 +34,20 @@ export default function Login() {
     }
   };
   return (
-    <div>
-      <div className="flex flex-col justify-center items-center w-screen h-screen">
-        <div className="w-80 h-80 shadow-[0px_4px_6px_0px_rgba(0,_0,_0,_0.1)] rounded-lg flex flex-col justify-center items-center">
-          <h1>Login</h1>
-          <form onSubmit={handleSubmit}>
+    <div className="flex h-screen">
+      <div className="ladoDer w-1/2 flex justify-center items-center">
+        <div className="flex flex-col justify-center items-center w-screen h-screen">
+          <h1 className="text-5xl mb-3 font-semibold">Bienvenido!</h1>
+          <p className="text-[#6B7280] text-sm">
+            Ingresa tu usuario y contraseña para acceder a la aplicacion.
+          </p>
+          <form onSubmit={handleSubmit} className="mt-15">
             <label class="floating-label">
               <span>Nombre</span>
               <input
                 type="text"
                 placeholder="Nombre"
-                class="input input-md m-3"
+                class="input input-md w-80 m-3"
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
               />
@@ -60,12 +63,95 @@ export default function Login() {
                 onChange={(e) => setContra(e.target.value)}
               />
             </label>
-            <button type="submit" className="btn bg-indigo-400 m-3">
-              Enviar
-            </button>
+            <div class="flex w-full flex-col">
+              <div className="flex flex-col">
+                <label class="label ml-3">
+                  <input
+                    type="checkbox"
+                    onChecked="checked"
+                    class="checkbox checkbox-sm"
+                  />
+                  Recuerdame
+                </label>
+                <button
+                  type="submit"
+                  className="btn text-white bg-[#0554F2] m-3"
+                >
+                  Enviar
+                </button>
+              </div>
+              <div class="divider">OR</div>
+              <div className="mt-3">
+                <button className="btn min-w-40 mr-4 bg-white text-black border-[#e5e5e5]">
+                  <svg
+                    aria-label="Google logo"
+                    width="16"
+                    height="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512"
+                  >
+                    <g>
+                      <path d="m0 0H512V512H0" fill="#fff"></path>
+                      <path
+                        fill="#34a853"
+                        d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"
+                      ></path>
+                      <path
+                        fill="#4285f4"
+                        d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"
+                      ></path>
+                      <path
+                        fill="#fbbc02"
+                        d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"
+                      ></path>
+                      <path
+                        fill="#ea4335"
+                        d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"
+                      ></path>
+                    </g>
+                  </svg>
+                  Google
+                </button>
+                <button className="btn min-w-40 bg-black text-white border-black">
+                  <svg
+                    aria-label="GitHub logo"
+                    width="16"
+                    height="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="white"
+                      d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z"
+                    ></path>
+                  </svg>
+                  GitHub
+                </button>
+              </div>
+            </div>
           </form>
-          <a href="/register" className="font-medium text-indigo-400 dark:text-indigo-400 hover:underline">Registrarse</a>
-          <p>{msg}</p>
+          <p className="mt-4 text-sm text-[#6B7280]">
+            No tienes una cuenta?
+            <a
+              href="/register"
+              className="font-medium ml-1 text-[#0511F2] dark:text-indigo-400 hover:underline"
+            >
+              Registrarse ahora.
+            </a>
+          </p>
+
+          <p className="mt-8 text-xs text-[#6B7280]">{msg}</p>
+        </div>
+      </div>
+      <div className="ladoIzq w-1/2">
+        <div className="bg-[#0511F2] m-5 h-[94.5%] rounded-xl">
+          <section className="flex justify-center items-center h-full rounded-xl  bg-gray-50">
+            <img
+              src="/dashboard.png"
+              alt="CRM dashboard mostrando estadísticas de ventas y gestión de equipo"
+              className="rounded-xl shadow-lg max-w-4xl w-full"
+            />
+          </section>
         </div>
       </div>
     </div>

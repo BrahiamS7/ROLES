@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router";
 import TaskCard from "../components/TaskCard";
+import Navbar from "../components/Navbar";
 import { cargarUsuario, getPerfil } from "../api/usuarios";
 import {
   getTareas,
@@ -103,86 +104,12 @@ export default function UserDetalle() {
   return (
     <div>
       <div className="h-screen bg-gradient-to-b from-[#eef0f1] via-[#E6ECF5] to-[#DCE3F0] flex flex-col">
-        <div class="navbar ">
-          <div class="flex-1">
-            <a class="btn btn-ghost text-xl">{perfil?.rol}</a>
-          </div>
-          <div class="flex-none">
-            <div class="dropdown dropdown-end">
-              <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-                <div class="indicator">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    {" "}
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    />{" "}
-                  </svg>
-                  <span class="badge badge-sm indicator-item">8</span>
-                </div>
-              </div>
-              <div
-                tabindex="0"
-                class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow"
-              >
-                <div class="card-body">
-                  <span class="text-lg font-bold">8 Items</span>
-                  <span class="text-info">Subtotal: $999</span>
-                  <div class="card-actions">
-                    <button class="btn btn-primary btn-block">View cart</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="dropdown dropdown-end">
-              <div
-                tabindex="0"
-                role="button"
-                class="btn btn-ghost btn-circle avatar"
-              >
-                <div class="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS Navbar component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
-                </div>
-              </div>
-              <ul
-                tabindex="0"
-                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-              >
-                <li>
-                  <a class="justify-between">
-                    Perfil
-                    <span class="badge">New</span>
-                  </a>
-                </li>
-                <li>
-                  <a>Configuracion</a>
-                </li>
-                <li>
-                  <button onClick={logOut}>Cerrar Sesion</button>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="dropdown dropdown-end ml-2">
-            <div tabindex="0" class="flex flex-col">
-              <p className="text-base">{perfil?.nombre}</p>
-              <p className="text-xs text-gray-400">ID:{perfil?.id}</p>
-            </div>
-          </div>
-        </div>
+        <Navbar
+                perfil={perfil}
+                logOut={logOut}
+              />
         <div className="full w-full flex-1 overflow-y-auto">
-          <a href="/home" className="btn bg-indigo-400 ml-15 mt-4 text-amber-50 w-26">
+          <a href="/home" className="btn bg-[#0511F2] ml-15 mt-4 text-amber-50 w-26">
           Volver
         </a>
           <div className="bg-[#F1F3F9] m-15 p-10 rounded-xl shadow">
@@ -206,8 +133,8 @@ export default function UserDetalle() {
                   <h2 className="ml-7">{user[0]?.nombre}</h2>
                 </div>
               </div>
-              <div class="fab">
-                <button class="btn btn-lg btn-circle btn-primary">+</button>
+              <div class="fab self-end">
+                <button class="btn btn-lg btn-circle text-white bg-[#0511F2]">+</button>
               </div>
             </div>
           </div>
@@ -239,7 +166,7 @@ export default function UserDetalle() {
               <input
                 type="submit"
                 value="Enviar"
-                className="btn bg-indigo-400 m-3"
+                className="btn bg-[#0511F2] text-white m-3"
               />
             </form>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
