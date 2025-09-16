@@ -22,14 +22,13 @@ router.post("/add", async (req, res) => {
 
 router.post("/getTareas", async (req, res) => {
   try {
-    const {id} = req.body;
+    const { id } = req.body;
     const result = await db.query("SELECT * FROM tareas WHERE usuario_id=$1", [
       id,
     ]);
     const tareas = result.rows;
-    
+
     res.status(200).json({ msg: "Tareas cargadas correctamente", tareas });
-    
   } catch (error) {
     console.log(error);
   }
@@ -46,14 +45,24 @@ router.delete("/delete", async (req, res) => {
 });
 
 router.put("/act", async (req, res) => {
-  const { id, titulo, descrip,estado } = req.body;
+  const { id, titulo, descrip, estado } = req.body;
   try {
-    await db.query("UPDATE tareas SET titulo=$1, descripcion=$2, estado=$3 WHERE id=$4", [
-      titulo,
-      descrip,
-      estado,
-      id,
-    ]);
+    await db.query(
+      "UPDATE tareas SET titulo=$1, descripcion=$2, estado=$3 WHERE id=$4",
+      [titulo, descrip, estado, id]
+    );
+    res.status(200).json({ msg: "Tarea actualizada correctamente" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+router.put("/actEst/:id", async (req, res) => {
+  const {id} = req.params;
+  const { estado } = req.body;
+  console.log(id, estado);
+
+  try {
+    await db.query("UPDATE tareas SET estado=$1 WHERE id=$2", [estado, id]);
     res.status(200).json({ msg: "Tarea actualizada correctamente" });
   } catch (error) {
     console.log(error);
