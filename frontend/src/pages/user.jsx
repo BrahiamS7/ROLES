@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { getPerfil } from "../api/usuarios";
 import TaskCard from "../components/TaskCard";
+import Home from "../components/Home";
+import Asidebar from "../components/Asidebar";
+import Tareas from "../components/Tareas";
 import Navbar from "../components/Navbar";
 import {
   addTarea,
@@ -13,6 +16,8 @@ import { useNavigate } from "react-router-dom";
 function User() {
   const [perfil, setPerfil] = useState(null);
   const [estado, setEstado] = useState("");
+  const [activeTab, setActiveTab] = useState("home");
+
   const [tareas, setTareas] = useState([]);
   const [titulo, setTitulo] = useState("");
   const [msg, setMsg] = useState("");
@@ -42,7 +47,6 @@ function User() {
   const borrarTarea = async (id) => {
     await deleteTarea({ id });
     const dataTareas = await getTareas({ id: perfil?.id });
-    console.log("info:" + dataTareas);
     setTareas(dataTareas.body.tareas);
   };
 
@@ -57,7 +61,6 @@ function User() {
       setMsg("");
     }, 3000);
     const dataTareas = await getTareas({ id: perfil?.id });
-    console.log("info:" + dataTareas);
     setTareas(dataTareas.body.tareas);
   };
 
@@ -94,72 +97,32 @@ function User() {
   }, [navigate]);
 
   return (
-    <div className="h-screen bg-gradient-to-b from-[#eef0f1] via-[#E6ECF5] to-[#DCE3F0] flex flex-col">
-      <Navbar
-              perfil={perfil}
-              logOut={logOut}
-            />
-      <div className="full w-full flex-1 overflow-y-auto">
-        <div className="bg-[#F1F3F9] m-15 p-10 rounded-xl shadow">
-          <h2 className="text-xl m-3">Agregar Tarea</h2>
-          <form onSubmit={agregarNota}>
-            <label class="floating-label">
-              <span>Titulo</span>
-              <input
-                type="text"
-                placeholder="Titulo"
-                className="input input-md m-3"
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
-                required
-              />
-            </label>
-            <label class="floating-label">
-              <span>Descripcion</span>
-              <input
-                type="text"
-                placeholder="Descripcion"
-                className="input input-md m-3"
-                value={descrip}
-                onChange={(e) => setDescrip(e.target.value)}
-                required
-              />
-            </label>
-            <input
-              type="submit"
-              value="Enviar"
-              className="btn bg-indigo-400 m-3"
-            />
-          </form>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-            {["Pendiente", "En progreso", "Completado"].map((estado) => (
-              <div key={estado} className="text-center">
-                <h1 className="font-bold text-lg mb-3">{estado}</h1>
-                <div className="flex flex-col items-center gap-3">
-                  {tareas
-                    .filter((t) => t.estado === estado)
-                    .map((t) => (
-                      <TaskCard
-                        key={t.id}
-                        tarea={t}
-                        titulo={titulo}
-                        setTitulo={setTitulo}
-                        descrip={descrip}
-                        setDescrip={setDescrip}
-                        estado={estado}
-                        setEstado={setEstado}
-                        setTarea={setTarea}
-                        borrarTarea={borrarTarea}
-                        actTarea={actTarea}
-                        cancelarAct={cancelarAct}
-                      />
-                    ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="text-gray-500">{msg}</p>
-        </div>
+    <div className="h-screen bg-white flex">
+      {/* SIDEBAR */}
+      <Asidebar rol={perfil} setActiveTab={setActiveTab} />
+
+      {/* CONTENIDO PRINCIPAL */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
+        <Navbar perfil={perfil} logOut={logOut} />
+        {activeTab === "home" && <Home />}
+
+        {activeTab === "tareas" && (
+          <Tareas
+            tareas={tareas}
+            agregarNota={agregarNota}
+            msg={msg}
+            titulo={titulo}
+            setTitulo={setTitulo}
+            descrip={descrip}
+            setDescrip={setDescrip}
+            estado={estado}
+            setEstado={setEstado}
+            setTarea={setTarea}
+            borrarTarea={borrarTarea}
+            actTarea={actTarea}
+            cancelarAct={cancelarAct}
+          />
+        )}
       </div>
     </div>
   );

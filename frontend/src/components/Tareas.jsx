@@ -22,7 +22,7 @@ export default function Tareas({
         h-screen max-h-screen overflow-y-auto"
       >
         <div className="flex justify-between items-center">
-          <h2 className="text-xl m-3">Tareas</h2>
+          <h2 className="text-xl m-3">Tareas "Proyecto actual"</h2>
           {/* BOTON MODAL FORM */}
           <button
             className="mr-5 border-1 bg-gradient-to-bl from-indigo-900 to-indigo-600 rounded-3xl p-3 text-white"

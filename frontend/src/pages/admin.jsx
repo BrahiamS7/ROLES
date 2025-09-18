@@ -116,7 +116,7 @@ function Admin() {
   return (
     <div className="h-screen bg-white flex">
       {/* SIDEBAR */}
-      <Asidebar setActiveTab={setActiveTab} />
+      <Asidebar rol={perfil.rol} activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* CONTENIDO PRINCIPAL */}
       <div className="flex-1 flex flex-col h-full overflow-hidden">

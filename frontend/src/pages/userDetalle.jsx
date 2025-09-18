@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router";
 import TaskCard from "../components/TaskCard";
 import Navbar from "../components/Navbar";
+import Asidebar from "../components/Asidebar";
+import Profile from "../components/profile";
 import { cargarUsuario, getPerfil } from "../api/usuarios";
 import {
   getTareas,
@@ -10,6 +12,7 @@ import {
   actualizarTarea,
   deleteTarea,
 } from "../api/tareas";
+import Tareas from "../components/Tareas";
 
 export default function UserDetalle() {
   //USES
@@ -102,103 +105,45 @@ export default function UserDetalle() {
   }, []);
 
   return (
-    <div>
-      <div className="h-screen bg-gradient-to-b from-[#eef0f1] via-[#E6ECF5] to-[#DCE3F0] flex flex-col">
-        <Navbar
-                perfil={perfil}
-                logOut={logOut}
+    <div className="">
+      <div className="h-screen bg-[white] flex flex-col">
+        <Navbar perfil={perfil} logOut={logOut} />
+        <div className="full w-full flex-1">
+          <a
+            href="/home"
+            className="btn mx-8 mt-4 rounded-2xl text-[#023059] w-26"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
               />
-        <div className="full w-full flex-1 overflow-y-auto">
-          <a href="/home" className="btn bg-[#0511F2] ml-15 mt-4 text-amber-50 w-26">
-          Volver
-        </a>
-          <div className="bg-[#F1F3F9] m-15 p-10 rounded-xl shadow">
-            <h2 className="mb-6 text-[#6B7280]">Trabajor</h2>
-            <div className="flex justify-between">
-              <div className="flex">
-                <div
-                  tabindex="0"
-                  role="button"
-                  class="btn btn-ghost btn-circle avatar w-20 h-20"
-                >
-                  <div class="rounded-full ">
-                    <img
-                      alt="Tailwind CSS Navbar component"
-                      src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <h2 className="ml-7 text-[#6B7280]">Operario</h2>
-                  <h2 className="ml-7">{user[0]?.nombre}</h2>
-                </div>
-              </div>
-              <div class="fab self-end">
-                <button class="btn btn-lg btn-circle text-white bg-[#0511F2]">+</button>
-              </div>
-            </div>
-          </div>
-          <div className="bg-[#F1F3F9] m-15 p-10 rounded-xl shadow">
-            <h2 className="text-xl m-3">Agregar Tarea a {user[0]?.nombre}:</h2>
-            <form onSubmit={agregarNota}>
-              <label class="floating-label">
-                <span>Titulo</span>
-                <input
-                  type="text"
-                  placeholder="Titulo"
-                  className="input input-md m-3"
-                  value={titulo}
-                  onChange={(e) => setTitulo(e.target.value)}
-                  required
-                />
-              </label>
-              <label class="floating-label">
-                <span>Descripcion</span>
-                <input
-                  type="text"
-                  placeholder="Descripcion"
-                  className="input input-md m-3"
-                  value={descrip}
-                  onChange={(e) => setDescrip(e.target.value)}
-                  required
-                />
-              </label>
-              <input
-                type="submit"
-                value="Enviar"
-                className="btn bg-[#0511F2] text-white m-3"
-              />
-            </form>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-              {["Pendiente", "En progreso", "Completado"].map((estado) => (
-                <div key={estado} className="text-center">
-                  <h1 className="font-bold text-lg mb-3">{estado}</h1>
-                  <div className="flex flex-col items-center gap-3">
-                    {tareas
-                      .filter((t) => t.estado === estado)
-                      .map((t) => (
-                        <TaskCard
-                          key={t.id}
-                          tarea={t}
-                          titulo={titulo}
-                          setTitulo={setTitulo}
-                          descrip={descrip}
-                          setDescrip={setDescrip}
-                          estado={estado}
-                          setEstado={setEstado}
-                          setTarea={setTarea}
-                          borrarTarea={borrarTarea}
-                          actTarea={actTarea}
-                          cancelarAct={cancelarAct}
-                        />
-                      ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <p>{msg}</p>
-          </div>
+            </svg>
+          </a>
+          <Profile user={user} />
+          <Tareas
+            tareas={tareas}
+            agregarNota={agregarNota}
+            msg={msg}
+            titulo={titulo}
+            setTitulo={setTitulo}
+            descrip={descrip}
+            setDescrip={setDescrip}
+            estado={estado}
+            setEstado={setEstado}
+            setTarea={setTarea}
+            borrarTarea={borrarTarea}
+            actTarea={actTarea}
+            cancelarAct={cancelarAct}
+          />
         </div>
       </div>
 

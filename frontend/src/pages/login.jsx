@@ -75,7 +75,7 @@ export default function Login() {
                 </label>
                 <button
                   type="submit"
-                  className="btn text-white bg-[#0554F2] m-3"
+                  className="btn text-white bg-gradient-to-bl from-indigo-900 to-indigo-600 m-3"
                 >
                   Enviar
                 </button>
@@ -134,7 +134,7 @@ export default function Login() {
             No tienes una cuenta?
             <a
               href="/register"
-              className="font-medium ml-1 text-[#0511F2] dark:text-indigo-400 hover:underline"
+              className="font-medium ml-1 text-indigo-900 dark:text-indigo-400 hover:underline"
             >
               Registrarse ahora.
             </a>
@@ -144,12 +144,12 @@ export default function Login() {
         </div>
       </div>
       <div className="ladoIzq w-1/2">
-        <div className="bg-[#0511F2] m-5 h-[94.5%] rounded-xl">
+        <div className="m-5 h-[94.5%] rounded-xl overflow-hidden">
           <section className="flex justify-center items-center h-full rounded-xl  bg-gray-50">
             <img
               src="/dashboard.png"
               alt="CRM dashboard mostrando estadísticas de ventas y gestión de equipo"
-              className="rounded-xl shadow-lg max-w-4xl w-full"
+              className="rounded-xl shadow-lg h-fit max-w-4xl w-full"
             />
           </section>
         </div>

@@ -19,7 +19,7 @@ export default function Usuarios({ usuarios }) {
               <tbody>
                 {usuarios.length > 0 ? (
                   usuarios.map((u, i) => (
-                      <tr key={i} className="bg-white">
+                      <tr key={i} className="bg-white rounded-2xl">
                         <td>
                           <div class="flex items-center gap-3 ">
                             <div class="avatar">

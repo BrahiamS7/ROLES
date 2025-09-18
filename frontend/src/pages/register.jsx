@@ -105,7 +105,7 @@ export default function Register() {
                 </label>
                 <button
                   type="submit"
-                  className="btn text-white bg-[#0511F2] m-3"
+                  className="btn text-white bg-gradient-to-bl from-indigo-900 to-indigo-600 m-3"
                 >
                   Enviar
                 </button>
@@ -164,7 +164,7 @@ export default function Register() {
             Ya tienes una cuenta?
             <a
               href="/login"
-              className="font-medium ml-1 text-[#0511F2] dark:text-indigo-400 hover:underline"
+              className="font-medium ml-1 text-indigo-900 dark:text-indigo-400 hover:underline"
             >
               Inicia sesion.
             </a>
