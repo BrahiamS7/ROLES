@@ -12,7 +12,7 @@ export default function Profile({ user }) {
             <div class="rounded-full ">
               <img
                 alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                src={user.imagen? user.imagen : "http://localhost:3001/uploads/defaultUser.png"}
               />
             </div>
           </div>

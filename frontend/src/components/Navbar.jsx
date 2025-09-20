@@ -46,7 +46,7 @@ export default function Navbar({ perfil, logOut }) {
               <div class="w-10 rounded-full">
                 <img
                   alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  src={perfil.imagen? perfil.imagen : "http://localhost:3001/uploads/defaultUser.png"}
                 />
               </div>
             </div>

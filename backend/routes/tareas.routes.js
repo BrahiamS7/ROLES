@@ -2,16 +2,14 @@ import express from "express";
 import db from "../db.js";
 
 const router = express.Router();
-//RUTAS GET
-
-//RUTAS POST
+//RUTAS
 router.post("/add", async (req, res) => {
   try {
     const { titulo, descrip, id } = req.body;
     console.log(titulo, descrip, id);
 
     await db.query(
-      "INSERT INTO tareas (titulo,descripcion,estado,usuario_id) VALUES ($1,$2,'Pendiente',$3)",
+      "INSERT INTO tareas_personales (titulo,descripcion,estado,usuario_id) VALUES ($1,$2,'Pendiente',$3)",
       [titulo, descrip, id]
     );
     res.status(200).json({ msg: "Tarea agregada correctamente" });
@@ -23,7 +21,7 @@ router.post("/add", async (req, res) => {
 router.post("/getTareas", async (req, res) => {
   try {
     const { id } = req.body;
-    const result = await db.query("SELECT * FROM tareas WHERE usuario_id=$1", [
+    const result = await db.query("SELECT * FROM tareas_personales WHERE usuario_id=$1", [
       id,
     ]);
     const tareas = result.rows;
@@ -37,7 +35,7 @@ router.post("/getTareas", async (req, res) => {
 router.delete("/delete", async (req, res) => {
   try {
     const id = req.body.id;
-    await db.query("DELETE FROM tareas * WHERE id=$1", [id]);
+    await db.query("DELETE FROM tareas_personales * WHERE id=$1", [id]);
     res.status(200).json({ msg: "Tarea eliminada correctamente" });
   } catch (error) {
     console.log(error);
@@ -48,7 +46,7 @@ router.put("/act", async (req, res) => {
   const { id, titulo, descrip, estado } = req.body;
   try {
     await db.query(
-      "UPDATE tareas SET titulo=$1, descripcion=$2, estado=$3 WHERE id=$4",
+      "UPDATE tareas_personales SET titulo=$1, descripcion=$2, estado=$3 WHERE id=$4",
       [titulo, descrip, estado, id]
     );
     res.status(200).json({ msg: "Tarea actualizada correctamente" });
@@ -62,7 +60,7 @@ router.put("/actEst/:id", async (req, res) => {
   console.log(id, estado);
 
   try {
-    await db.query("UPDATE tareas SET estado=$1 WHERE id=$2", [estado, id]);
+    await db.query("UPDATE tareas_personales SET estado=$1 WHERE id=$2", [estado, id]);
     res.status(200).json({ msg: "Tarea actualizada correctamente" });
   } catch (error) {
     console.log(error);

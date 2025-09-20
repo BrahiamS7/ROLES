@@ -25,8 +25,8 @@ export default function Usuarios({ usuarios }) {
                             <div class="avatar">
                               <div class="mask mask-squircle h-12 w-12">
                                 <img
-                                  src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-                                  alt="Avatar Tailwind CSS Component"
+                                  src={u.imagen? u.imagen : "http://localhost:3001/uploads/defaultUser.png"}
+                                  alt="userImg"
                                 />
                               </div>
                             </div>

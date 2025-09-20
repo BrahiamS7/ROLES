@@ -121,7 +121,7 @@ function Admin() {
       {/* CONTENIDO PRINCIPAL */}
       <div className="flex-1 flex flex-col h-full overflow-hidden">
         <Navbar perfil={perfil} logOut={logOut} />
-        {activeTab === "home" && <Home />}
+        {activeTab === "home" &&  <Home usuarios={usuarios} id={perfil.id}/>}
 
         {activeTab === "usuarios" && <Usuarios usuarios={usuarios} />}
 
