@@ -48,6 +48,21 @@ export default function Asidebar({ activeTab, setActiveTab, rol }) {
               Usuarios
             </a>
           )}
+          {rol === "admin" && (
+            <a
+              href="#"
+              className={`transition duration-300 ease-in-out hover:bg-blue-100 rounded px-2 py-1 text-xs sm:text-sm md:text-base
+            ${
+              activeTab === "proyectos"
+                ? "bg-gradient-to-bl from-indigo-900 to-indigo-600  text-white"
+                : ""
+            }  
+              `}
+              onClick={() => setActiveTab("proyectos")}
+            >
+              Proyectos
+            </a>
+          )}
         </nav>
       </div>
     </aside>

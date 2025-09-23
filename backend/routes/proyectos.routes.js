@@ -41,6 +41,20 @@ router.post("/get", async (req, res) => {
   }
 });
 
+router.post("/getP", async (req, res) => {
+  const { id } = req.body;
+  try {
+    const result = await db.query("SELECT * FROM proyecto WHERE id=$1", [
+      id.id,
+    ]);
+    const proyectos = result.rows;
+    res.status(200).json({ proyectos });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Error del servidor" });
+  }
+});
+
 router.post("/add", upload.single("imagen"), async (req, res) => {
   try {
     const { id, titulo, descrip } = req.body;
@@ -75,14 +89,29 @@ router.delete("/delete", async (req, res) => {
   }
 });
 
-router.put("/act", async (req, res) => {
+router.put("/act", upload.single("imagen"), async (req, res) => {
   try {
-    const { adminId, titulo, descripcion, estado, imagen } = req.body;
+    const { id, titulo, descrip, estado } = req.body;
+    console.log(id);
+    
+    let imageUrl = null;
+    if (req.file) {
+      imageUrl = `http://localhost:3001/uploads/${req.file.filename}`;
+    } else {
+      const result = await db.query("SELECT imagen FROM proyecto WHERE id=$1", [
+        id,
+      ]);
+      imageUrl = result.rows[0]?.imagen;
+    }
+    
     await db.query(
-      "UPDATE proyecto SET titulo=$1, descripcion=$2, estado=$3, imagen=$4 WHERE admin_id=$5",
-      [titulo, descripcion, estado, imagen, adminId]
+      "UPDATE proyecto SET titulo=$1, descripcion=$2, estado=$3, imagen=$4 WHERE id=$5",
+      [titulo, descrip, estado, imageUrl, id]
     );
-    res.status(200).json({ msg: "Proyecto actualizado correctamente" });
+
+    res
+      .status(200)
+      .json({ msg: "Proyecto actualizado correctamente", url: imageUrl });
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "Error del servidor" });
@@ -102,6 +131,5 @@ router.put("/actEst/:id", async (req, res) => {
     res.status(500).json({ msg: "Error del servidor" });
   }
 });
-
 
 export default router;

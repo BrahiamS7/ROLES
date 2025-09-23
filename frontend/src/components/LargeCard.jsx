@@ -1,4 +1,4 @@
-export default function LargeCard({ titulo, data }) {
+export default function LargeCard({ titulo, data, info, setActiveTab }) {
   console.log(data);
   if (!data || data.length === 0) {
     return (
@@ -15,7 +15,6 @@ export default function LargeCard({ titulo, data }) {
       {data[0].titulo ? (
         <div className="pl-3">
           {data.slice(0, 2).map((proy) => {
-            console.log("Imagen proyecto:", proy.imagen);
             return (
               <div key={proy.id} className="flex flex-row mb-2">
                 <div className="flex items-center justify-center mr-4">
@@ -40,7 +39,11 @@ export default function LargeCard({ titulo, data }) {
               <div key={user.id} className="flex flex-row mb-2">
                 <div className="flex items-center justify-center mr-4">
                   <img
-                    src={user.imagen? user.imagen : "http://localhost:3001/uploads/defaultUser.png"}
+                    src={
+                      user.imagen
+                        ? user.imagen
+                        : "http://localhost:3001/uploads/defaultUser.png"
+                    }
                     alt={user.nombre}
                     className="w-6 h-6 object-cover rounded-full"
                   />
@@ -55,7 +58,18 @@ export default function LargeCard({ titulo, data }) {
         </div>
       )}
 
-      <p className="text-xs pl-3 mb-2 mt-auto">Ver mas...</p>
+      <p
+        className="text-xs pl-3 mb-2 mt-auto cursor-pointer w-20"
+        onClick={() => {
+          if (typeof setActiveTab === "function") {
+            setActiveTab(info);
+          } else {
+            console.warn("setActiveTab no fue pasado como prop");
+          }
+        }}
+      >
+        Ver mas...
+      </p>
     </div>
   );
 }

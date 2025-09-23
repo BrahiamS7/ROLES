@@ -6,6 +6,8 @@ import Admin from "../pages/admin.jsx";
 import User from "../pages/user.jsx";
 import UserDetalle from "../pages/userDetalle.jsx";
 import Pruebas from "../pages/prueba.jsx";
+import InfoProyectos from "../components/InfoProyectos.jsx";
+import ProyectoDetail from "../components/ProyectoDetail.jsx";
 
 export default function AppRoutes() {
   return (
@@ -17,6 +19,7 @@ export default function AppRoutes() {
       <Route path="/admin" element={<Admin />} />
       <Route path="/user" element={<User />} />
       <Route path="/user/:nombre" element={<UserDetalle />} />
+      <Route path="/proyecto/:id" element={<ProyectoDetail />} />
       <Route path="/prueba" element={<Pruebas/>}/>
     </Routes>
   );

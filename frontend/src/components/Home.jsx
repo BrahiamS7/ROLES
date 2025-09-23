@@ -4,7 +4,7 @@ import { getProyects, addProyect } from "../api/proyectos";
 import Card from "./Card";
 import LargeCard from "./LargeCard";
 
-export default function Home({ id,usuarios }) {
+export default function Home({ id, usuarios, setActiveTab }) {
   const [proyectos, setProyectos] = useState([]);
   const [titulo, setTitulo] = useState("");
   const [descrip, setDescrip] = useState("");
@@ -147,14 +147,18 @@ export default function Home({ id,usuarios }) {
               classN={
                 "bg-amber-200 flex flex-col justify-center items-center w-full"
               }
+              info={"proyectos"}
+              setActiveTab={setActiveTab}
             />
           </div>
 
           {/* INFORMACION DEL EQUIPO */}
           <div className="lg:col-span-3">
-            <LargeCard 
-            titulo={"Lista de equipo"}
-            data={usuarios}  
+            <LargeCard
+              titulo={"Lista de equipo"}
+              data={usuarios}
+              info={"usuarios"}
+              setActiveTab={setActiveTab}
             />
           </div>
           <div className="lg:col-span-1">

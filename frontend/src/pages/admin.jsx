@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Home from "../components/Home";
 import Usuarios from "../components/Usuarios";
 import Tareas from "../components/Tareas";
+import Proyectos from "../components/Proyectos";
 import {
   addTarea,
   getTareas,
@@ -44,7 +45,7 @@ function Admin() {
     setTimeout(() => {
       setMsg("");
     }, 3000);
-    // Refresca tareas después de actualizar
+    
     const dataTareas = await getTareas({ id: perfil?.id });
     setTareas(dataTareas.body.tareas);
     setTitulo("");
@@ -121,9 +122,11 @@ function Admin() {
       {/* CONTENIDO PRINCIPAL */}
       <div className="flex-1 flex flex-col h-full overflow-hidden">
         <Navbar perfil={perfil} logOut={logOut} />
-        {activeTab === "home" &&  <Home usuarios={usuarios} id={perfil.id}/>}
+        {activeTab === "home" &&  <Home usuarios={usuarios} id={perfil.id} setActiveTab={setActiveTab}/>}
 
         {activeTab === "usuarios" && <Usuarios usuarios={usuarios} />}
+
+        {activeTab === "proyectos" && <Proyectos />}
 
         {activeTab === "tareas" && (
           <Tareas
