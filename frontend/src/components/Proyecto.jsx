@@ -6,6 +6,7 @@ import {
   actualizarProyect,
 } from "../api/proyectos";
 import { useNavigate } from "react-router-dom";
+import Miembros from "./Miembros";
 
 export default function Proyecto(id) {
   const [proyecto, setProyecto] = useState([]);
@@ -210,64 +211,7 @@ export default function Proyecto(id) {
       </div>
 
       {/* MIEMBROS */}
-      <div className="bg-[#F2F2F2] mx-7 my-10 p-10 rounded-xl shadow">
-        <h2 className="mb-6 text-[#6B7280]">Miembros:</h2>
-        <div className="flex flex-col gap-6">
-          <div className="flex">
-            <div
-              tabindex="0"
-              role="button"
-              class="btn btn-ghost btn-circle avatar w-20 h-20"
-            >
-              <div class="rounded-full ">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src={
-                    proyecto?.imagen
-                      ? proyecto.imagen
-                      : "http://localhost:3001/uploads/defaultproyecto.png"
-                  }
-                />
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <h2 className="ml-7 text-indigo-900">Aqui va el nombre</h2>
-              <h2 className="ml-7">Aqui va el cargo</h2>
-            </div>
-            <div className="items-center justify-center flex  flex-1">
-              <h2 className="font-bold">
-                Trabajando en: <span className="font-normal">Hacer x cosa</span>
-              </h2>
-              <h2 className="ml-10 font-bold">
-                Estado: <span className="font-normal">Pendiente</span>
-              </h2>
-            </div>
-          </div>
-          <div className="flex">
-            <div
-              tabindex="0"
-              role="button"
-              class="btn btn-ghost btn-circle avatar w-20 h-20"
-            >
-              <div class="rounded-full ">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src={
-                    proyecto?.imagen
-                      ? proyecto.imagen
-                      : "http://localhost:3001/uploads/defaultproyecto.png"
-                  }
-                />
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <h2 className="ml-7 text-indigo-900">{proyecto?.titulo}</h2>
-              <h2 className="ml-7">{proyecto?.descripcion} </h2>
-              <h2 className="ml-7">{proyecto?.estado} </h2>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Miembros proyecto={proyecto} id={id}/>
 
       {/* SUBTAREAS */}
       <div className="bg-[#F2F2F2] mx-7 my-10 p-10 rounded-xl shadow">

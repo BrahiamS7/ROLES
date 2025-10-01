@@ -64,3 +64,25 @@ export async function deleteProyect(data) {
   const body = await res.json();
   return { status, body };
 }
+
+export async function getProyUsers(data) {
+  const res = await fetch(`${url}/api/proyectos/getProyUser`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const status = res.status;
+  const body = await res.json();
+  return { status, body };
+}
+
+export async function addProyUser(data) {
+  const res = await fetch(`${url}/api/proyectos/addProyUser`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const status = res.status;
+  const body = await res.json();
+  return { status, body };
+}

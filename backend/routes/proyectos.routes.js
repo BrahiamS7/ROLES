@@ -93,7 +93,7 @@ router.put("/act", upload.single("imagen"), async (req, res) => {
   try {
     const { id, titulo, descrip, estado } = req.body;
     console.log(id);
-    
+
     let imageUrl = null;
     if (req.file) {
       imageUrl = `http://localhost:3001/uploads/${req.file.filename}`;
@@ -103,7 +103,7 @@ router.put("/act", upload.single("imagen"), async (req, res) => {
       ]);
       imageUrl = result.rows[0]?.imagen;
     }
-    
+
     await db.query(
       "UPDATE proyecto SET titulo=$1, descripcion=$2, estado=$3, imagen=$4 WHERE id=$5",
       [titulo, descrip, estado, imageUrl, id]
@@ -129,6 +129,38 @@ router.put("/actEst/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "Error del servidor" });
+  }
+});
+
+router.post("/getProyUser",async(req,res)=>{
+  try {
+    const {id}=req.body
+    const result=await db.query("SELECT u.id, u.nombre FROM proyecto_usuarios pu INNER JOIN usuarios u ON pu.usuario_id = u.id WHERE pu.proyecto_id =$1;",[
+      id
+    ])
+    const data=result.rows
+    console.log(data);
+    
+    res.status(200).json({data})
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({msg:"Error por parte del servidor"})
+  }
+})
+
+
+
+router.post("/addProyUser", async (req, res) => {
+  try {
+    const { idU, idP } = req.body;
+    const idPr=idP.id
+    console.log(req.body);
+    
+    await db.query("INSERT INTO proyecto_usuarios (proyecto_id, usuario_id) VALUES ($1,$2)",[
+      idPr,idU
+    ])
+  } catch (error) {
+    console.log(error);
   }
 });
 

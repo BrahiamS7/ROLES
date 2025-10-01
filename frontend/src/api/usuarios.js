@@ -13,17 +13,27 @@ export async function cargarUsuario(nombre) {
 }
 
 export async function getPerfil(token) {
-  const response=await fetch(`${url}/api/auth/profile`,{
-    headers:{
-        Authorization:`Bearer ${token}`
-    }
+  const response = await fetch(`${url}/api/auth/profile`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
-  if(!response.ok) throw new Error("Error en la funcion");
-  const data=await response.json();
+  if (!response.ok) throw new Error("Error en la funcion");
+  const data = await response.json();
   console.log(data);
-  
+
   console.log(`Usuario actual: ${data.user}`);
-  return data
+  return data;
+}
+
+export async function cargarUsuariosDisp() {
+  const res = await fetch(`${url}/api/usuarios/usersDisp`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
+  const status = res.status;
+  const body = await res.json();
+  return { status, body };
 }
 
 export async function agregarUsuario(data) {
@@ -33,7 +43,7 @@ export async function agregarUsuario(data) {
     body: JSON.stringify(data),
   });
   const status = res.status;
-  const body = await res.json();  
+  const body = await res.json();
   return { status, body };
 }
 
@@ -44,7 +54,7 @@ export async function agregarAdmin(data) {
     body: JSON.stringify(data),
   });
   const status = res.status;
-  const body = await res.json();  
+  const body = await res.json();
   return { status, body };
 }
 
