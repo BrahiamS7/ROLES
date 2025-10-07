@@ -1,28 +1,34 @@
 import { useEffect, useState } from "react";
 import { cargarUsuariosDisp } from "../api/usuarios";
-import { getProyUsers, addProyUser } from "../api/proyectos";
+import { getProyUsers, addProyUser, deleteProyUser } from "../api/proyectos";
 
 export default function Miembros({ id }) {
   const [usuarios, setUsuarios] = useState([]);
   const [proyU, setProyU] = useState([]);
 
   useEffect(() => {
-    const getInfo = async () => {
-      const data = await cargarUsuariosDisp(); 
-      setUsuarios(data.body);
-    };
-    const getUsers = async () => {
-      const data = await getProyUsers(id);
-      const users = data.body.data;
-      setProyU(users);
-    };
-
     getInfo();
     getUsers();
   }, []);
+
+  const getInfo = async () => {
+    const data = await cargarUsuariosDisp();
+    setUsuarios(data.body);
+  };
+  const getUsers = async () => {
+    const data = await getProyUsers(id);
+    const users = data.body.data;
+    setProyU(users);
+  };
+
   const addUserP = async (idU, idP) => {
     await addProyUser({ idU, idP });
     document.getElementById("my_modal_1").closeModal();
+  };
+  const deleteUserP = async (idU) => {
+    console.log(idU);
+    await deleteProyUser({ idU });
+    getProyUsers();
   };
 
   return (
@@ -107,14 +113,34 @@ export default function Miembros({ id }) {
                 <h2 className="ml-7 text-indigo-900">{u.nombre}</h2>
                 <h2 className="ml-7">{u.id}</h2>
               </div>
-              <div className="items-center justify-center flex  flex-1">
-                <h2 className="font-bold">
-                  Trabajando en:{" "}
-                  <span className="font-normal">Hacer x cosa</span>
-                </h2>
-                <h2 className="ml-10 font-bold">
-                  Estado: <span className="font-normal">Pendiente</span>
-                </h2>
+              <div className=" flex ml-5 justify-between max-w-2xs flex-1">
+                <div>
+                  <h2 className="font-bold flex text-start">
+                    Trabajando en:{" "}
+                    <span className="font-normal">Hacer x cosa</span>
+                  </h2>
+                  <h2 className="ml-10 font-bold">
+                    Estado: <span className="font-normal">Pendiente</span>
+                  </h2>
+                </div>
+                <div className="dropdown dropdown-top">
+                  <div tabIndex={0} role="button" className="btn m-1">
+                    ⬆️
+                  </div>
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                  >
+                    <li>
+                      <a>Editiar tarea</a>
+                    </li>
+                    <li>
+                      <a onClick={() => deleteUserP(u.id)}>
+                        Eliminar del proyecto
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           ))}

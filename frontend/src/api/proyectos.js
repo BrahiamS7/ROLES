@@ -86,3 +86,36 @@ export async function addProyUser(data) {
   const body = await res.json();
   return { status, body };
 }
+
+export async function deleteProyUser(data) {
+  const res = await fetch(`${url}/api/proyectos/deleteProyUser`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const status = res.status;
+  const body = await res.json();
+  return { status, body };
+}
+
+export async function getSubtareas(data) {
+  const res = await fetch(`${url}/api/subtareas/get`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const status = res.status;
+  const body = await res.json();
+  return { status, body };
+}
+
+export async function addSubtarea(data) {
+  const res = await fetch(`${url}/api/subtareas/add`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const status = res.status;
+  const body = await res.json();
+  return { status, body };
+}

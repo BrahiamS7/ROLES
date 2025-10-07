@@ -8,6 +8,7 @@ import usuariosRoutes from "./routes/usuarios.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import tareasRoutes from "./routes/tareas.routes.js";
 import proyectosRoutes from "./routes/proyectos.routes.js";
+import subtareasRoutes from "./routes/subtareas.routes.js";
 
 env.config();
 
@@ -36,6 +37,7 @@ app.use("/api/usuarios", usuariosRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/notas", tareasRoutes);
 app.use("/api/proyectos", proyectosRoutes);
+app.use("/api/subtareas", subtareasRoutes);
 
 // RUTA LISTEN
 app.listen(port, () => {

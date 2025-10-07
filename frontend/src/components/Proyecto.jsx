@@ -7,6 +7,7 @@ import {
 } from "../api/proyectos";
 import { useNavigate } from "react-router-dom";
 import Miembros from "./Miembros";
+import Subtareas from "./Subtareas";
 
 export default function Proyecto(id) {
   const [proyecto, setProyecto] = useState([]);
@@ -16,7 +17,7 @@ export default function Proyecto(id) {
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
-  const agregarProyecto = async (e) => {
+  const agregarProyecto = async (e) => { 
     e.preventDefault();
     await addProyect({ id, titulo, descrip, file });
     setTitulo("");
@@ -186,7 +187,7 @@ export default function Proyecto(id) {
                     ✕
                   </button>
                 </form>
-                <form onSubmit={agregarProyecto} method="dialog">
+                <form method="dialog">
                   <h3>Eliminar Proyecto</h3>
                   <label className="floating-label mb-10">
                     <h3>
@@ -214,43 +215,7 @@ export default function Proyecto(id) {
       <Miembros proyecto={proyecto} id={id}/>
 
       {/* SUBTAREAS */}
-      <div className="bg-[#F2F2F2] mx-7 my-10 p-10 rounded-xl shadow">
-        <h2 className="mb-6 text-[#6B7280]">Tareas del Proyecto:</h2>
-        <div className="flex flex-col gap-6">
-          <div className="flex">
-            <div className="flex flex-col">
-              <h2 className="ml-7 text-indigo-900">
-                Aqui va el nombre de la tarea
-              </h2>
-              <h2 className="ml-7">Aqui va la descripcion</h2>
-            </div>
-            <div className="items-start justify-center flex  flex-1">
-              <h2 className="font-bold">
-                Asignado a: <span className="font-normal">Hacer x cosa</span>
-              </h2>
-              <h2 className="ml-10 font-bold">
-                Estado: <span className="font-normal">Pendiente</span>
-              </h2>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex flex-col">
-              <h2 className="ml-7 text-indigo-900">
-                Aqui va el nombre de la tarea
-              </h2>
-              <h2 className="ml-7">Aqui va la descripcion</h2>
-            </div>
-            <div className="items-start justify-center flex  flex-1">
-              <h2 className="font-bold">
-                Asignado a: <span className="font-normal">Hacer x cosa</span>
-              </h2>
-              <h2 className="ml-10 font-bold">
-                Estado: <span className="font-normal">Pendiente</span>
-              </h2>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Subtareas idP={id} />
     </div>
   );
 }

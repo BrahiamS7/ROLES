@@ -154,7 +154,6 @@ router.post("/addProyUser", async (req, res) => {
   try {
     const { idU, idP } = req.body;
     const idPr=idP.id
-    console.log(req.body);
     
     await db.query("INSERT INTO proyecto_usuarios (proyecto_id, usuario_id) VALUES ($1,$2)",[
       idPr,idU
@@ -163,5 +162,18 @@ router.post("/addProyUser", async (req, res) => {
     console.log(error);
   }
 });
+
+router.delete("/deleteProyUser",async(req,res)=>{
+  try {
+    const {idU}=req.body;
+    console.log(req.body);
+    await db.query("DELETE FROM proyecto_usuarios WHERE usuario_id = $1",
+      [idU]
+    )
+    res.status(200).json({msg:"Usuario eliminado correctamente del proyecto"})
+  } catch (error) {
+    console.log(error);
+  }
+})
 
 export default router;
