@@ -119,3 +119,14 @@ export async function addSubtarea(data) {
   const body = await res.json();
   return { status, body };
 }
+
+export async function actSubtarea(data){
+  const res=await fetch(`${url}/api/subtareas/act`,{
+    method:'PUT',
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify(data),
+  });
+  const status=res.status;
+  const body=await res.json();
+  return {status, body}
+}

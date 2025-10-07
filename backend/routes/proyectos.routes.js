@@ -19,7 +19,7 @@ router.post("/upload", upload.single("imagen"), async (req, res) => {
     const imageUrl = `http://localhost:3001/uploads/${req.file.filename}`;
 
     await pool.query("UPDATE proyecto SET imagen = $1 WHERE id = $2", [
-      imageUrl,
+      imageUrl,5
       id,
     ]);
 

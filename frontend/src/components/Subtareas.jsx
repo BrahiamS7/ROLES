@@ -1,19 +1,22 @@
 import { useEffect } from "react";
-import { getSubtareas, addSubtarea } from "../api/proyectos";
+import { getSubtareas, addSubtarea, actSubtarea } from "../api/proyectos";
 import { useState } from "react";
+import { getProyUsers } from "../api/proyectos";
 
 export default function Subtareas({ idP }) {
   const [subtareas, setSubtareas] = useState([]);
+  const [proyU, setProyU] = useState([]);
   const [titulo, setTitulo] = useState("");
   const [descrip, setDescrip] = useState("");
   const [prior, setPrior] = useState("");
+  const [userId, setUserId] = useState("");
 
   const addSubtareas = async () => {
     setTitulo("");
     setDescrip("");
     setPrior("");
 
-    await addSubtarea({ titulo, descrip, prior, id: idP });
+    await addSubtarea({ titulo, descrip, prior, id: idP });t
   };
 
   useEffect(() => {
@@ -21,9 +24,28 @@ export default function Subtareas({ idP }) {
       const data = await getSubtareas(idP);
       setSubtareas(data.body);
     };
+    const getUsers = async () => {
+      const data = await getProyUsers(idP);
+      const users = data.body.data;
+      setProyU(users);
+    };
+
+    getUsers();
     getSubtarea();
   }, []);
-
+  const unAct = async () => {
+    setTitulo("");
+    setDescrip("");
+    setPrior("");
+    setUserId("");
+  };
+  const setAct = async () => {
+    document.getElementById("my_modal_3").showModal();
+  };
+   const actSubT = async (idT) => {
+    console.log(titulo,descrip,prior,userId,idT);
+    await actSubtarea(titulo,descrip,prior,userId,idT)
+  };
   return (
     <div className="bg-[#F2F2F2] mx-7 my-10 p-10 rounded-xl shadow">
       <div className="flex items-center justify-between">
@@ -41,8 +63,8 @@ export default function Subtareas({ idP }) {
                 ✕
               </button>
             </form>
+            <h3 className="font-bold text-lg">Añadir Tarea</h3>
             <form onSubmit={addSubtareas} method="dialog">
-              <h3>Añadir Tarea</h3>
               <label className="floating-label">
                 <span>Titulo</span>
                 <input
@@ -113,13 +135,81 @@ export default function Subtareas({ idP }) {
                     className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
                   >
                     <li>
-                      <a>Editiar tarea</a>
+                      <a onClick={() => setAct()}>Editar tarea</a>
                     </li>
                     <li>
                       <a>Eliminar del proyecto</a>
                     </li>
                   </ul>
                 </div>
+                {/* MODAL PARA EDITAR SUBTAREA */}
+                <dialog id="my_modal_3" className="modal">
+                  <div className="modal-box">
+                    <h3 className="font-bold text-lg">Editar tarea</h3>
+                    <form onSubmit={()=>actSubT(t.id)} method="dialog">
+                      <label className="floating-label">
+                        <span>Titulo</span>
+                        <input
+                          type="text"
+                          placeholder="Titulo"
+                          className="input input-md m-3"
+                          value={titulo}
+                          onChange={(e) => setTitulo(e.target.value)}
+                          required
+                        />
+                      </label>
+                      <label className="floating-label">
+                        <span>Descripcion</span>
+                        <input
+                          type="text"
+                          placeholder="Descripcion"
+                          className="input input-md m-3"
+                          value={descrip}
+                          onChange={(e) => setDescrip(e.target.value)}
+                          required
+                        />
+                      </label>
+                      <label className="floating-label m-3">
+                        <select
+                          defaultValue="Escoger prioridad"
+                          onChange={(e) => setPrior(e.target.value)}
+                          className="select"
+                        >
+                          <option disabled={true}>Escoger prioridad</option>
+                          <option value="Alta">Alta</option>
+                          <option value="Media">Media</option>
+                          <option value="Poca">Poca</option>
+                        </select>
+                      </label>
+                      <label className="floating-label m-3">
+                        <select
+                          defaultValue="Asignar a"
+                          onChange={(e) => setUserId(e.target.value)}
+                          className="select"
+                        >
+                          <option disabled={true}>Asignar a</option>
+                          {proyU.map((u, i) => (
+                            <div key={i}>
+                              <option value={u.id}> {u.nombre} </option>
+                            </div>
+                          ))}
+                        </select>
+                      </label>
+                      <input
+                        type="submit"
+                        value="Enviar"
+                        className="btn bg-[#0511F2] text-white m-3"
+                      />
+                    </form>
+                    <div className="modal-action">
+                      <form method="dialog">
+                        <button className="btn" onClick={() => unAct()}>
+                          Close
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </dialog>
               </div>
             </div>
           ))
