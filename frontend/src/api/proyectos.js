@@ -130,3 +130,12 @@ export async function actSubtarea(data){
   const body=await res.json();
   return {status, body}
 }
+export async function getUsersSubT(data){
+  const res=await fetch(`${url}/api/subtareas/getUserSubT`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(data)
+  })
+  const body=await res.json();
+  return body
+}

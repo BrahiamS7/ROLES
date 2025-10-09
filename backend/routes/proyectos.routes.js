@@ -19,7 +19,7 @@ router.post("/upload", upload.single("imagen"), async (req, res) => {
     const imageUrl = `http://localhost:3001/uploads/${req.file.filename}`;
 
     await pool.query("UPDATE proyecto SET imagen = $1 WHERE id = $2", [
-      imageUrl,5
+      imageUrl,
       id,
     ]);
 
@@ -132,48 +132,50 @@ router.put("/actEst/:id", async (req, res) => {
   }
 });
 
-router.post("/getProyUser",async(req,res)=>{
+router.post("/getProyUser", async (req, res) => {
   try {
-    const {id}=req.body
-    const result=await db.query("SELECT u.id, u.nombre FROM proyecto_usuarios pu INNER JOIN usuarios u ON pu.usuario_id = u.id WHERE pu.proyecto_id =$1;",[
-      id
-    ])
-    const data=result.rows
+    const { id } = req.body;
+    const result = await db.query(
+      "SELECT u.id AS usuario_id, u.nombre AS usuario, s.id AS subtarea_id, s.titulo AS subtarea, s.descripcion, s.estado, s.prioridad FROM proyecto_usuarios pu INNER JOIN usuarios u ON pu.usuario_id = u.id LEFT JOIN subtareas s ON s.usuario_id = u.id AND s.proyecto_id = pu.proyecto_id WHERE pu.proyecto_id = $1 ORDER BY u.id;",
+      [id]
+    );
+    const data = result.rows;
     console.log(data);
-    
-    res.status(200).json({data})
+
+    res.status(200).json({ data });
   } catch (error) {
     console.log(error);
-    res.status(500).json({msg:"Error por parte del servidor"})
+    res.status(500).json({ msg: "Error por parte del servidor" });
   }
-})
-
-
+});
 
 router.post("/addProyUser", async (req, res) => {
   try {
     const { idU, idP } = req.body;
-    const idPr=idP.id
-    
-    await db.query("INSERT INTO proyecto_usuarios (proyecto_id, usuario_id) VALUES ($1,$2)",[
-      idPr,idU
-    ])
+    const idPr = idP.id;
+
+    await db.query(
+      "INSERT INTO proyecto_usuarios (proyecto_id, usuario_id) VALUES ($1,$2)",
+      [idPr, idU]
+    );
   } catch (error) {
     console.log(error);
   }
 });
 
-router.delete("/deleteProyUser",async(req,res)=>{
+router.delete("/deleteProyUser", async (req, res) => {
   try {
-    const {idU}=req.body;
+    const { idU } = req.body;
     console.log(req.body);
-    await db.query("DELETE FROM proyecto_usuarios WHERE usuario_id = $1",
-      [idU]
-    )
-    res.status(200).json({msg:"Usuario eliminado correctamente del proyecto"})
+    await db.query("DELETE FROM proyecto_usuarios WHERE usuario_id = $1", [
+      idU,
+    ]);
+    res
+      .status(200)
+      .json({ msg: "Usuario eliminado correctamente del proyecto" });
   } catch (error) {
     console.log(error);
   }
-})
+});
 
 export default router;

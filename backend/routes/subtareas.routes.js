@@ -34,19 +34,19 @@ router.post("/add", async (req, res) => {
 });
 
 router.put("/act", async (req, res) => {
-  console.log(req);
   try {
     console.log(req.body);
+    const { titulo, descrip, prior, idT } = req.body;
 
-    if (req.body.idU) {
-      const idU = req.body.idU;
+    if (req.body.userId) {
+      const idU = req.body.userId;
       await db.query(
-        "UPDATE subtarea SET titulo=$1, descripcion=$2, prioridad=$3, usuario_id=$4  WHERE id=$5",
+        "UPDATE subtareas SET titulo=$1, descripcion=$2, prioridad=$3, usuario_id=$4  WHERE id=$5",
         [titulo, descrip, prior, idU, idT]
       );
     }
     await db.query(
-      "UPDATE subtarea SET titulo=$1, descripcion=$2, prioridad=$3 WHERE id=$4",
+      "UPDATE subtareas SET titulo=$1, descripcion=$2, prioridad=$3 WHERE id=$4",
       [titulo, descrip, prior, idT]
     );
     res
@@ -56,7 +56,18 @@ router.put("/act", async (req, res) => {
     console.log(error);
     res.status(500).json({ msg: "Error del servidor" });
   }
-  
+});
+
+router.post("/getUserSubT", async (req, res) => {
+  try {
+    const response = await db.query(
+      "SELECT s.id, s.titulo, s.descripcion, s.estado,s.prioridad, p.titulo AS proyecto FROM subtareas s JOIN proyecto p ON s.proyecto_id = p.id WHERE s.usuario_id = $1;"
+    );
+    const data = response.rows;
+    res.status(200).json({data,msg:"Tareas cargadas exitosamente"})
+  } catch (error) {
+    console.log(error );
+  }
 });
 
 export default router;

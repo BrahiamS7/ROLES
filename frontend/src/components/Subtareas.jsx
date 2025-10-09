@@ -16,14 +16,14 @@ export default function Subtareas({ idP }) {
     setDescrip("");
     setPrior("");
 
-    await addSubtarea({ titulo, descrip, prior, id: idP });t
+    await addSubtarea({ titulo, descrip, prior, id: idP });
+    getSubtarea();
   };
-
+  const getSubtarea = async () => {
+    const data = await getSubtareas(idP);
+    setSubtareas(data.body);
+  };
   useEffect(() => {
-    const getSubtarea = async () => {
-      const data = await getSubtareas(idP);
-      setSubtareas(data.body);
-    };
     const getUsers = async () => {
       const data = await getProyUsers(idP);
       const users = data.body.data;
@@ -42,9 +42,12 @@ export default function Subtareas({ idP }) {
   const setAct = async () => {
     document.getElementById("my_modal_3").showModal();
   };
-   const actSubT = async (idT) => {
-    console.log(titulo,descrip,prior,userId,idT);
-    await actSubtarea(titulo,descrip,prior,userId,idT)
+  const actSubT = async (e, idT) => {
+    e.preventDefault();
+    console.log(titulo, descrip, prior, userId, idT);
+    await actSubtarea({ titulo, descrip, prior, userId, idT });
+    getSubtarea();
+    document.getElementById("my_modal_3").close();
   };
   return (
     <div className="bg-[#F2F2F2] mx-7 my-10 p-10 rounded-xl shadow">
@@ -113,8 +116,8 @@ export default function Subtareas({ idP }) {
           subtareas.map((t, i) => (
             <div className="flex" key={i}>
               <div className="flex flex-col">
-                <h2 className="ml-7 text-indigo-900">{t.titulo}</h2>
-                <h2 className="ml-7">{t.descripcion}</h2>
+                <h2 className="ml-7 text-indigo-900">Subtarea:</h2>
+                <h2 className="ml-7">{t.titulo}</h2>
               </div>
               <div className="items-center flex ml-10 flex-1">
                 <div className="flex">
@@ -125,10 +128,37 @@ export default function Subtareas({ idP }) {
                   <h2 className="ml-10 font-bold flex text-start">
                     Estado: <span className="font-normal">{t.estado}</span>
                   </h2>
+                  <h2 className="font-bold ml-10">
+                    Prioridad:{" "}
+                    <span
+                      className={
+                        t.prioridad === "Alta"
+                          ? "font-normal text-white badge badge-error"
+                          : t.prioridad === "Media"
+                          ? "font-normal text-white badge badge-accent"
+                          : "font-normal text-white badge badge-neutral"
+                      }
+                    >
+                      {t.prioridad}
+                    </span>
+                  </h2>
                 </div>
                 <div className="dropdown dropdown-top ml-5">
                   <div tabIndex={0} role="button" className="btn m-1">
-                    ⬆️
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                      />
+                    </svg>
                   </div>
                   <ul
                     tabIndex={0}
@@ -146,7 +176,7 @@ export default function Subtareas({ idP }) {
                 <dialog id="my_modal_3" className="modal">
                   <div className="modal-box">
                     <h3 className="font-bold text-lg">Editar tarea</h3>
-                    <form onSubmit={()=>actSubT(t.id)} method="dialog">
+                    <form onSubmit={(e) => actSubT(e, t.id)} method="dialog">
                       <label className="floating-label">
                         <span>Titulo</span>
                         <input
@@ -190,7 +220,10 @@ export default function Subtareas({ idP }) {
                           <option disabled={true}>Asignar a</option>
                           {proyU.map((u, i) => (
                             <div key={i}>
-                              <option value={u.id}> {u.nombre} </option>
+                              <option value={u.usuario_id}>
+                                {" "}
+                                {u.usuario}{" "}
+                              </option>
                             </div>
                           ))}
                         </select>

@@ -22,13 +22,14 @@ export default function Miembros({ id }) {
   };
 
   const addUserP = async (idU, idP) => {
+    document.getElementById("my_modal_1").close();
     await addProyUser({ idU, idP });
-    document.getElementById("my_modal_1").closeModal();
+    await getUsers();
   };
   const deleteUserP = async (idU) => {
-    console.log(idU);
     await deleteProyUser({ idU });
-    getProyUsers();
+    await getInfo();
+    await getUsers();
   };
 
   return (
@@ -110,32 +111,51 @@ export default function Miembros({ id }) {
                 </div>
               </div>
               <div className="flex flex-col">
-                <h2 className="ml-7 text-indigo-900">{u.nombre}</h2>
-                <h2 className="ml-7">{u.id}</h2>
+                <h2 className="ml-7 text-indigo-900">{u.usuario}</h2>
+                <h2 className="ml-7">{u.usuario_id}</h2>
               </div>
-              <div className=" flex ml-5 justify-between max-w-2xs flex-1">
+              <div className=" ml-10 flex justify-between max-w-2xs flex-1">
                 <div>
                   <h2 className="font-bold flex text-start">
                     Trabajando en:{" "}
-                    <span className="font-normal">Hacer x cosa</span>
+                    {u.subtarea ? (
+                      <span className="font-normal">{u.subtarea}</span>
+                    ) : (
+                      <span className="font-normal">Disponible</span>
+                    )}
                   </h2>
-                  <h2 className="ml-10 font-bold">
-                    Estado: <span className="font-normal">Pendiente</span>
+                  <h2 className="font-bold">
+                    Estado:
+                    {u.estado ? (
+                      <span className="font-normal">{u.estado}</span>
+                    ) : (
+                      <span className="font-normal">...</span>
+                    )}
                   </h2>
                 </div>
                 <div className="dropdown dropdown-top">
                   <div tabIndex={0} role="button" className="btn m-1">
-                    ⬆️
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                      />
+                    </svg>
                   </div>
                   <ul
                     tabIndex={0}
                     className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
                   >
                     <li>
-                      <a>Editiar tarea</a>
-                    </li>
-                    <li>
-                      <a onClick={() => deleteUserP(u.id)}>
+                      <a onClick={() => deleteUserP(u.usuario_id)}>
                         Eliminar del proyecto
                       </a>
                     </li>
